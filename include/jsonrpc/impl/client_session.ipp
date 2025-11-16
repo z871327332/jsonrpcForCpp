@@ -151,11 +151,13 @@ inline std::string ClientSession::send_request_sync(const std::string& request_b
         req_.prepare_payload();
 
         // 发送 HTTP 请求
+        stream_.expires_after(timeout_);
         boost::beast::http::write(stream_, req_);
 
         // 接收 HTTP 响应
         buffer_ = {};
         res_ = {};
+        stream_.expires_after(timeout_);
         boost::beast::http::read(stream_, buffer_, res_);
 
         // 提取响应 body

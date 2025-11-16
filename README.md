@@ -135,6 +135,17 @@ server.set_logger([](const std::string& msg) {
 
 > 回调在 I/O 线程中执行，请确保输出逻辑是线程安全的。
 
+### 超时与通知行为
+
+- Client 支持通过 `set_timeout` 设置连接、读写的总超时。超时到达会抛出 `Error` 并关闭当前连接，行为不依赖消息内容。  
+- 通知（无 ID 的请求）在客户端侧不等待响应，通常在 <200ms 内返回；服务端收到通知会执行方法但不返回结果。
+
+### 依赖与链接注意事项
+
+- 本仓库默认使用 `third_party/boost` 头文件 + 本地静态库 `jsonrpc_boost_json` 提供 Boost.JSON 符号，避免系统 Boost 缺少 json 组件导致链接错误。  
+- 如需改用系统 Boost 库，请确保可用的 `Boost::json` 目标或等价符号，并在 CMake 中调整链接配置；否则保留当前 amalgam 方案即可。  
+- 现有超时仅作用于 TCP 连接/读写，可根据需要在 Client 层增加单次 RPC 的 deadline 逻辑。
+
 ## 编译和安装
 
 ### 克隆仓库
