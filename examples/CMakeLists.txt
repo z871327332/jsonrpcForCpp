@@ -1,0 +1,12 @@
+function(jsonrpc_add_example target source_file)
+    add_executable(${target} ${source_file})
+    target_link_libraries(${target} PRIVATE jsonrpc)
+endfunction()
+
+jsonrpc_add_example(calculator_server calculator/calculator_server.cpp)
+jsonrpc_add_example(calculator_client calculator/calculator_client.cpp)
+jsonrpc_add_example(async_client async_client/main.cpp)
+jsonrpc_add_example(batch_request batch_request/main.cpp)
+jsonrpc_add_example(type_conversion type_conversion/main.cpp)
+jsonrpc_add_example(error_handling error_handling/main.cpp)
+jsonrpc_add_example(timeout_retry timeout_retry/main.cpp)
